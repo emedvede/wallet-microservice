@@ -1,0 +1,191 @@
+{
+	"variables": [],
+	"info": {
+		"name": "wallet",
+		"_postman_id": "eee42f4c-6882-f0b1-384e-cc2dc96843d9",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create wallet",
+			"request": {
+				"url": "http://localhost:8080/wallets",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"currency\":\"EUR\",\n\"userId\":\"new-user\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get wallets by user id",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/wallets/user?userId=user1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"user"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "user1",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Typ",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "userId",
+						"value": "user1",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"currency\":\"EUR\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all wallets",
+			"request": {
+				"url": "http://localhost:8080/wallets",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Typ",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "userId",
+						"value": "user1",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"currency\":\"EUR\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get wallet by id",
+			"request": {
+				"url": "http://localhost:8080/wallets/1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Typ",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "userId",
+						"value": "user1",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"currency\":\"EUR\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get transactions by wallet id",
+			"request": {
+				"url": "http://localhost:8080/wallets/1/transactions",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Typ",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "userId",
+						"value": "user1",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"currency\":\"EUR\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create credit transaction",
+			"request": {
+				"url": "http://localhost:8080/transactions",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"globalId\":\"557\",\n\"currency\":\"EUR\",\n\"walletId\": \"2\",\n\"amount\":\"50\",\n\"transactionTypeId\":\"C\",\n\"description\":\"add money\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create debit transaction",
+			"request": {
+				"url": "http://localhost:8080/transactions",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"globalId\":\"558\",\n\"currency\":\"EUR\",\n\"walletId\": \"2\",\n\"amount\":\"20\",\n\"transactionTypeId\":\"D\",\n\"description\":\"add money\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
