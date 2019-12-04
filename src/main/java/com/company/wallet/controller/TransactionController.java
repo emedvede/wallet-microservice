@@ -40,7 +40,7 @@ public class TransactionController {
     )
     @ResponseBody
     public String getWalletTransactionsById( @PathVariable("id") int id) throws WalletException, ClassNotFoundException {
-        logger.debug("Called TransactionController.getWalletTransactionsById with parameter walletId=" + id );
+        logger.debug("Called TransactionController.getWalletTransactionsById with parameter walletId={}",id);
         List<Transaction> transactionList = transactionService.getTransactionsByWalletId(id);
         return new GsonBuilder().
                 setExclusionStrategies(new GsonExclusionStrategy(ExcludeField.EXCLUDE_WALLET)).

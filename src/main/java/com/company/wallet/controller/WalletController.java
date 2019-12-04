@@ -60,7 +60,7 @@ class WalletController {
     )
     @ResponseBody
     public String getWalletById( @PathVariable("id") int id) throws WalletException, ClassNotFoundException {
-        logger.debug("Called WalletController.getWalletById with id=" + id);
+        logger.debug("Called WalletController.getWalletById with id={}",id);
         Wallet wallet = walletService.findById(id);
         return new GsonBuilder().setExclusionStrategies(new GsonExclusionStrategy(ExcludeField.EXCLUDE_WALLET))
                 .create().toJson(wallet);
@@ -72,7 +72,7 @@ class WalletController {
     )
     @ResponseBody
     public String getWalletsByUserId( @RequestParam("userId") String userId) throws WalletException, ClassNotFoundException {
-        logger.debug("Called WalletController.getWalletsByUserId with userId=" + userId);
+        logger.debug("Called WalletController.getWalletsByUserId with userId={}",userId);
         List<Wallet> wallets = walletService.findByUserId(userId);
         return new GsonBuilder().setExclusionStrategies(new GsonExclusionStrategy(ExcludeField.EXCLUDE_TRANSACTIONS))
                 .create().toJson(wallets);
