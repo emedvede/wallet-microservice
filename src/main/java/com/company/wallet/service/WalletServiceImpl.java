@@ -32,7 +32,7 @@ import java.util.Optional;
 @Validated
 @PropertySource("classpath:application.properties")
 @Service
-class WalletServiceImpl implements  WalletService{
+class WalletServiceImpl implements WalletService{
 
     @Autowired
     private WalletRepository walletRepository;
@@ -97,7 +97,7 @@ class WalletServiceImpl implements  WalletService{
             validator.isTrue(currency != null,error,ErrorCode.BadRequest.getCode());
             return walletRepository.save(new Wallet(userId, currency, new BigDecimal(0), updatedBy));
         } catch (ObjectNotFoundException e){
-            throw new WalletException(String.format(ErrorMessage.NO_CURRENCY_PRESENT,currencyName), ErrorCode.BadRequest.getCode());
+            throw new WalletException(String.format(ErrorMessage.NO_CURRENCY_PRESENT,currencyName),ErrorCode.BadRequest.getCode());
         }
     }
 
