@@ -4,7 +4,6 @@ import com.company.wallet.entities.Currency;
 import com.company.wallet.entities.Transaction;
 import com.company.wallet.entities.TransactionType;
 import com.company.wallet.entities.Wallet;
-import com.company.wallet.exceptions.ErrorCode;
 import com.company.wallet.exceptions.ErrorMessage;
 import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
@@ -16,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -81,7 +81,7 @@ public class TransactionServiceImpl implements TransactionService {
         if(wallet != null) {
             return transactionRepository.findByWallet(wallet);
         } else {
-            throw new WalletException(String.format(ErrorMessage.NO_WALLET_FOUND,walletId.toString()), ErrorCode.BadRequest.getCode());
+            throw new WalletException(String.format(ErrorMessage.NO_WALLET_FOUND,walletId.toString()), HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -117,7 +117,7 @@ public class TransactionServiceImpl implements TransactionService {
             //Currency currency = currencyRepository.getOne(currencyId);
             Currency currency = currencyRepository.findByName(currencyName);
             String error = String.format(ErrorMessage.NO_CURRENCY_PRESENT, currencyName);
-            inputParametersValidator.conditionIsTrue(currency != null,error,ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(currency != null,error,HttpStatus.BAD_REQUEST.value());
 
             //Get transactionType reference
             TransactionType transactionType = transactionTypeRepository.getOne(transactionTypeId);
@@ -125,11 +125,11 @@ public class TransactionServiceImpl implements TransactionService {
             //Check wallet is present
             Wallet wallet = walletService.findById(Integer.valueOf(walletId));
             error = String.format(ErrorMessage.NO_WALLET_FOUND, walletId);
-            inputParametersValidator.conditionIsTrue(wallet != null,error,ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(wallet != null,error,HttpStatus.BAD_REQUEST.value());
 
             //check that transaction and wallet have the same currency
             error = String.format(ErrorMessage.TRANSACTION_CURRENCY_NOT_EQ_WALLET_CURRENCY,currency.getName(), wallet.getCurrency().getName());
-            inputParametersValidator.conditionIsTrue(wallet.getCurrency().getId().equals(currency.getId()),error,ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(wallet.getCurrency().getId().equals(currency.getId()),error,HttpStatus.BAD_REQUEST.value());
 
             //Update wallet, checks if there is enough funds for debit transaction. If not, throws WalletException
             wallet = walletService.updateWalletAmount(wallet,amount,transactionTypeId.equalsIgnoreCase(transactionTypeCredit));
@@ -140,7 +140,7 @@ public class TransactionServiceImpl implements TransactionService {
             return transactionRepository.save(transaction);
 
         } catch(NumberFormatException e){
-            throw new WalletException(String.format(NUMBER_FORMAT_MISMATCH,amount),ErrorCode.BadRequest.getCode());
+            throw new WalletException(String.format(NUMBER_FORMAT_MISMATCH,amount),HttpStatus.BAD_REQUEST.value());
         }
 
     }

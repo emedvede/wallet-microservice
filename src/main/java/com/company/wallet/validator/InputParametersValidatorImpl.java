@@ -1,7 +1,7 @@
 package com.company.wallet.validator;
 
-import com.company.wallet.exceptions.ErrorCode;
 import com.company.wallet.exceptions.WalletException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -31,7 +31,7 @@ public class InputParametersValidatorImpl implements InputParametersValidator<St
         for (String parameter : required) {
             if (!input.containsKey(parameter) || (input.get(parameter) == null) || (input.get(parameter).isEmpty())) {
                 String message = String.format(NO_MANDATORY_FIELD, parameter);
-                throw new WalletException(message, ErrorCode.BadRequest.getCode());
+                throw new WalletException(message, HttpStatus.BAD_REQUEST.value());
             }
         }
     }

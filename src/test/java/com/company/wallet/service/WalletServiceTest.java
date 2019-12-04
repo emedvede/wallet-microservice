@@ -2,7 +2,6 @@ package com.company.wallet.service;
 
 import com.company.wallet.entities.Currency;
 import com.company.wallet.entities.Wallet;
-import com.company.wallet.exceptions.ErrorCode;
 import com.company.wallet.exceptions.ErrorMessage;
 import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
@@ -142,7 +142,7 @@ public class WalletServiceTest {
             fail();
         }catch(WalletException e){
             assertEquals(e.getMessage(),String.format(ErrorMessage.NO_WALLET_FOUND,"110"));
-            assertEquals(e.getErrorCode(),ErrorCode.BadRequest.getCode());
+            assertEquals(e.getErrorCode(),HttpStatus.BAD_REQUEST.value());
         }
     }
     // public List<Wallet> findByUserId(@NotBlank String userId) throws WalletException;
@@ -183,7 +183,7 @@ public class WalletServiceTest {
         Wallet found = walletService.createWallet(USER,"Wrong");
         }catch(WalletException e){
             assertEquals(e.getMessage(),String.format(ErrorMessage.NO_CURRENCY_PRESENT,"Wrong"));
-            assertEquals(e.getErrorCode(),ErrorCode.BadRequest.getCode());
+            assertEquals(e.getErrorCode(),HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -228,7 +228,7 @@ public class WalletServiceTest {
             fail();
         } catch (WalletException ex){
             assertEquals(ex.getMessage(),String.format(ErrorMessage.NOT_ENOUGH_FUNDS,wallet2.getId(),String.valueOf(amount)));
-            assertEquals(ex.getErrorCode(),ErrorCode.BadRequest.getCode());
+            assertEquals(ex.getErrorCode(),HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -240,7 +240,7 @@ public class WalletServiceTest {
             fail();
         } catch (WalletException ex){
             assertEquals(ex.getMessage(),String.format(ErrorMessage.NUMBER_FORMAT_MISMATCH,badAmount));
-            assertEquals(ex.getErrorCode(),ErrorCode.BadRequest.getCode());
+            assertEquals(ex.getErrorCode(),HttpStatus.BAD_REQUEST.value());
         }
     }
 }
