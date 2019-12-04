@@ -3,8 +3,8 @@ package com.company.wallet.controller;
 import com.company.wallet.entities.Currency;
 import com.company.wallet.entities.Wallet;
 import com.company.wallet.service.WalletService;
-import com.company.wallet.validator.Validator;
-import com.company.wallet.validator.ValidatorImpl;
+import com.company.wallet.validator.InputParametersValidator;
+import com.company.wallet.validator.InputParametersValidatorImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,8 +42,8 @@ public class WalletControllerTest {
     @TestConfiguration
     static class WalletControllerTestContextConfiguration {
         @Bean
-        public Validator validator() {
-            return new ValidatorImpl();
+        public InputParametersValidator validator() {
+            return new InputParametersValidatorImpl();
         }
 
     }

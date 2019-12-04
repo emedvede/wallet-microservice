@@ -6,7 +6,7 @@ import com.company.wallet.gson.adapter.HibernateProxyTypeAdapter;
 import com.company.wallet.gson.exclusion.ExcludeField;
 import com.company.wallet.gson.exclusion.GsonExclusionStrategy;
 import com.company.wallet.service.TransactionService;
-import com.company.wallet.validator.Validator;
+import com.company.wallet.validator.InputParametersValidator;
 import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @Autowired
-    private Validator validator;
+    private InputParametersValidator inputParametersValidator;
 
     @GetMapping(
             value = "/wallets/{id}/transactions",
@@ -72,7 +72,7 @@ public class TransactionController {
     public String createWalletTransaction(@RequestBody Map<String, String> dataMap) throws WalletException, ClassNotFoundException {
         logger.debug("Called TransactionController.createWalletTransaction" );
 
-        validator.validate(dataMap,Arrays.asList("globalId", "currency", "walletId", "transactionTypeId", "amount"));
+        inputParametersValidator.validate(dataMap,Arrays.asList("globalId", "currency", "walletId", "transactionTypeId", "amount"));
 
         String globalId = dataMap.get("globalId");
         String currency = dataMap.get("currency");

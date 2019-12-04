@@ -5,7 +5,7 @@ import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.gson.adapter.HibernateProxyTypeAdapter;
 import com.company.wallet.gson.exclusion.ExcludeField;
 import com.company.wallet.gson.exclusion.GsonExclusionStrategy;
-import com.company.wallet.validator.Validator;
+import com.company.wallet.validator.InputParametersValidator;
 import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ class WalletController {
     private WalletService walletService;
 
     @Autowired
-    private Validator validator;
+    private InputParametersValidator inputParametersValidator;
 
     @GetMapping(
             value = "/test",
@@ -89,7 +89,7 @@ class WalletController {
     @ResponseBody
     public String createWallet(@RequestBody HashMap<String, String> dataHashMap) throws WalletException {
         logger.debug("Called WalletController.createWallet");
-        validator.validate(dataHashMap,Arrays.asList("userId","currency"));
+        inputParametersValidator.validate(dataHashMap,Arrays.asList("userId","currency"));
         Wallet wallet = walletService.createWallet(dataHashMap.get("userId"),dataHashMap.get("currency"));
         return new GsonBuilder().registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY).create().toJson(wallet);
     }

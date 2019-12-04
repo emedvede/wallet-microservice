@@ -5,8 +5,8 @@ import com.company.wallet.entities.Transaction;
 import com.company.wallet.entities.TransactionType;
 import com.company.wallet.entities.Wallet;
 import com.company.wallet.service.TransactionService;
-import com.company.wallet.validator.Validator;
-import com.company.wallet.validator.ValidatorImpl;
+import com.company.wallet.validator.InputParametersValidator;
+import com.company.wallet.validator.InputParametersValidatorImpl;
 import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,8 +45,8 @@ public class TransactionControllerTest {
     @TestConfiguration
     static class WalletControllerTestContextConfiguration {
         @Bean
-        public Validator validator() {
-            return new ValidatorImpl();
+        public InputParametersValidator validator() {
+            return new InputParametersValidatorImpl();
         }
 
     }

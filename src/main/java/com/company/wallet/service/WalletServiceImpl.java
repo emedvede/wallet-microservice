@@ -8,7 +8,7 @@ import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
 import com.company.wallet.repository.TransactionRepository;
 import com.company.wallet.repository.WalletRepository;
-import com.company.wallet.validator.Validator;
+import com.company.wallet.validator.InputParametersValidator;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +44,7 @@ class WalletServiceImpl implements WalletService{
     private CurrencyRepository currencyRepository;
 
     @Autowired
-    private Validator validator;
+    private InputParametersValidator inputParametersValidator;
 
     @Value("${db.updated_by}")
     private String updatedBy;
@@ -68,7 +68,7 @@ class WalletServiceImpl implements WalletService{
     public Wallet findById(@NotNull Integer id) throws WalletException {
        Optional<Wallet> optionalWallet =  walletRepository.findById(id);
        //validate
-       validator.isTrue(optionalWallet.isPresent(),String.format(ErrorMessage.NO_WALLET_FOUND,id.toString()),ErrorCode.BadRequest.getCode());
+       inputParametersValidator.conditionIsTrue(optionalWallet.isPresent(),String.format(ErrorMessage.NO_WALLET_FOUND,id.toString()),ErrorCode.BadRequest.getCode());
        return optionalWallet.get();
     }
 
@@ -94,7 +94,7 @@ class WalletServiceImpl implements WalletService{
             //Currency currency = currencyRepository.getOne(currencyId);
             Currency currency = currencyRepository.findByName(currencyName);
             String error = String.format(ErrorMessage.NO_CURRENCY_PRESENT,currencyName);
-            validator.isTrue(currency != null,error,ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(currency != null,error,ErrorCode.BadRequest.getCode());
             return walletRepository.save(new Wallet(userId, currency, new BigDecimal(0), updatedBy));
         } catch (ObjectNotFoundException e){
             throw new WalletException(String.format(ErrorMessage.NO_CURRENCY_PRESENT,currencyName),ErrorCode.BadRequest.getCode());
@@ -123,7 +123,7 @@ class WalletServiceImpl implements WalletService{
 
             //check that there is enough funds on wallet balance for debit transaction
             Boolean condition = (isCredit || (wallet.getBalance().compareTo(transactionAmount.abs()) >= 0) );
-            validator.isTrue(condition, String.format(ErrorMessage.NOT_ENOUGH_FUNDS,wallet.getId(),amount),ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(condition, String.format(ErrorMessage.NOT_ENOUGH_FUNDS,wallet.getId(),amount),ErrorCode.BadRequest.getCode());
 
             //update wallet
             wallet.setBalance(wallet.getBalance().add(transactionAmount));

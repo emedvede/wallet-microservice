@@ -12,13 +12,20 @@ import java.util.Map;
 import static com.company.wallet.exceptions.ErrorMessage.NO_MANDATORY_FIELD;
 
 /**
- * Validator to check that mandatory parameters are present and some condition is TRUE.
+ * InputParametersValidator to check that mandatory parameters are present and some condition is TRUE.
  * @author Elena Medvedeva
  */
 @Validated
 @Component
-public class ValidatorImpl implements Validator<String,String>{
+public class InputParametersValidatorImpl implements InputParametersValidator<String,String> {
 
+    /**
+     * Validates that all required parameters are present in the input map.
+     * In case not all required fields are present throws WalletException
+     * @param input
+     * @param required
+     * @throws WalletException
+     */
     @Override
     public void validate(@NotNull Map<String, String> input, @NotNull List<String> required) throws WalletException {
         for (String parameter : required) {
@@ -29,8 +36,15 @@ public class ValidatorImpl implements Validator<String,String>{
         }
     }
 
+    /**
+     * Throws WalletException with errorMessage and errorCode if condition is not true
+     * @param condition
+     * @param errorMessage
+     * @param errorCode
+     * @throws WalletException
+     */
     @Override
-    public void isTrue(@NotNull Boolean condition,@NotNull String errorMessage, int errorCode) throws WalletException{
+    public void conditionIsTrue(@NotNull Boolean condition, @NotNull String errorMessage, int errorCode) throws WalletException{
         if(!condition){
             throw new WalletException(errorMessage, errorCode);
         }

@@ -11,8 +11,8 @@ import com.company.wallet.repository.CurrencyRepository;
 import com.company.wallet.repository.TransactionRepository;
 import com.company.wallet.repository.TransactionTypeRepository;
 import com.company.wallet.repository.WalletRepository;
-import com.company.wallet.validator.Validator;
-import com.company.wallet.validator.ValidatorImpl;
+import com.company.wallet.validator.InputParametersValidator;
+import com.company.wallet.validator.InputParametersValidatorImpl;
 import org.hibernate.ObjectNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,8 +50,8 @@ public class TransactionServiceTest {
         }
 
         @Bean
-        public Validator validator() {
-            return new ValidatorImpl();
+        public InputParametersValidator validator() {
+            return new InputParametersValidatorImpl();
         }
         //for annotation validation on method signature
         @Bean

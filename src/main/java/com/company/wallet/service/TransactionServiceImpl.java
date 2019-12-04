@@ -10,7 +10,7 @@ import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
 import com.company.wallet.repository.TransactionRepository;
 import com.company.wallet.repository.TransactionTypeRepository;
-import com.company.wallet.validator.Validator;
+import com.company.wallet.validator.InputParametersValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionTypeRepository transactionTypeRepository;
 
     @Autowired
-    private Validator validator;
+    private InputParametersValidator inputParametersValidator;
 
 
     @Value("${db.updated_by}")
@@ -117,7 +117,7 @@ public class TransactionServiceImpl implements TransactionService {
             //Currency currency = currencyRepository.getOne(currencyId);
             Currency currency = currencyRepository.findByName(currencyName);
             String error = String.format(ErrorMessage.NO_CURRENCY_PRESENT, currencyName);
-            validator.isTrue(currency != null,error,ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(currency != null,error,ErrorCode.BadRequest.getCode());
 
             //Get transactionType reference
             TransactionType transactionType = transactionTypeRepository.getOne(transactionTypeId);
@@ -125,11 +125,11 @@ public class TransactionServiceImpl implements TransactionService {
             //Check wallet is present
             Wallet wallet = walletService.findById(Integer.valueOf(walletId));
             error = String.format(ErrorMessage.NO_WALLET_FOUND, walletId);
-            validator.isTrue(wallet != null,error,ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(wallet != null,error,ErrorCode.BadRequest.getCode());
 
             //check that transaction and wallet have the same currency
             error = String.format(ErrorMessage.TRANSACTION_CURRENCY_NOT_EQ_WALLET_CURRENCY,currency.getName(), wallet.getCurrency().getName());
-            validator.isTrue(wallet.getCurrency().getId().equals(currency.getId()),error,ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(wallet.getCurrency().getId().equals(currency.getId()),error,ErrorCode.BadRequest.getCode());
 
             //Update wallet, checks if there is enough funds for debit transaction. If not, throws WalletException
             wallet = walletService.updateWalletAmount(wallet,amount,transactionTypeId.equalsIgnoreCase(transactionTypeCredit));
