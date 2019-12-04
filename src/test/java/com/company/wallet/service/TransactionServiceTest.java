@@ -4,7 +4,6 @@ import com.company.wallet.entities.Currency;
 import com.company.wallet.entities.Transaction;
 import com.company.wallet.entities.TransactionType;
 import com.company.wallet.entities.Wallet;
-import com.company.wallet.exceptions.ErrorCode;
 import com.company.wallet.exceptions.ErrorMessage;
 import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
@@ -150,13 +150,13 @@ public class TransactionServiceTest {
     @Test
     public void testGetTransactionsByWalletId_Failed() throws WalletException {
         String error = String.format(ErrorMessage.NO_WALLET_FOUND,wallet2.getId().toString());
-        Mockito.when(walletService.findById(wallet2.getId())).thenThrow(new WalletException(error,ErrorCode.BadRequest.getCode()));
+        Mockito.when(walletService.findById(wallet2.getId())).thenThrow(new WalletException(error,HttpStatus.BAD_REQUEST.value()));
         try {
             List<Transaction> found = transactionService.getTransactionsByWalletId(wallet2.getId());
             fail();
         } catch (WalletException ex){
             assertEquals(ex.getMessage(),String.format(ErrorMessage.NO_WALLET_FOUND,wallet2.getId().toString()));
-            assertEquals(ex.getErrorCode(),ErrorCode.BadRequest.getCode());
+            assertEquals(ex.getErrorCode(),HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -189,14 +189,14 @@ public class TransactionServiceTest {
         int counter = globalIdCounter++;
         String error = String.format(ErrorMessage.NOT_ENOUGH_FUNDS,wallet2.getId(),String.valueOf(amount));
         Mockito.when(walletService.updateWalletAmount(wallet2,String.valueOf(amount),false)).
-                thenThrow(new WalletException(error, ErrorCode.BadRequest.getCode()));
+                thenThrow(new WalletException(error, HttpStatus.BAD_REQUEST.value()));
         Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(transactionDebit);
         try {
             Transaction found = transactionService.createTransaction(String.valueOf(counter),currency.getName(),wallet2.getId().toString(), typeDebit.getId(),String.valueOf(amount),"Success trn");
             fail();
         } catch (WalletException ex){
             assertEquals(ex.getMessage(),String.format(ErrorMessage.NOT_ENOUGH_FUNDS,wallet2.getId(),String.valueOf(amount)));
-            assertEquals(ex.getErrorCode(),ErrorCode.BadRequest.getCode());
+            assertEquals(ex.getErrorCode(),HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -212,7 +212,7 @@ public class TransactionServiceTest {
             fail();
         } catch (WalletException ex){
             assertEquals(ex.getMessage(),String.format(ErrorMessage.NO_WALLET_FOUND, notFoundWalletId));
-            assertEquals(ex.getErrorCode(),ErrorCode.BadRequest.getCode());
+            assertEquals(ex.getErrorCode(),HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -227,7 +227,7 @@ public class TransactionServiceTest {
             Transaction found = transactionService.createTransaction(String.valueOf(counter), currency.getName(), wallet1.getId().toString(), typeCredit.getId(), wrongAmount, "Fail trn");
         }catch (WalletException ex){
             assertEquals(ex.getMessage(),String.format(NUMBER_FORMAT_MISMATCH,wrongAmount));
-            assertEquals(ex.getErrorCode(),ErrorCode.BadRequest.getCode());
+            assertEquals(ex.getErrorCode(),HttpStatus.BAD_REQUEST.value());
         }
     }
 }

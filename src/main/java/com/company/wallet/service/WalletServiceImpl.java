@@ -2,7 +2,6 @@ package com.company.wallet.service;
 
 import com.company.wallet.entities.Currency;
 import com.company.wallet.entities.Wallet;
-import com.company.wallet.exceptions.ErrorCode;
 import com.company.wallet.exceptions.ErrorMessage;
 import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
@@ -13,6 +12,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -68,7 +68,7 @@ class WalletServiceImpl implements WalletService{
     public Wallet findById(@NotNull Integer id) throws WalletException {
        Optional<Wallet> optionalWallet =  walletRepository.findById(id);
        //validate
-       inputParametersValidator.conditionIsTrue(optionalWallet.isPresent(),String.format(ErrorMessage.NO_WALLET_FOUND,id.toString()),ErrorCode.BadRequest.getCode());
+       inputParametersValidator.conditionIsTrue(optionalWallet.isPresent(),String.format(ErrorMessage.NO_WALLET_FOUND,id.toString()),HttpStatus.BAD_REQUEST.value());
        return optionalWallet.get();
     }
 
@@ -94,10 +94,10 @@ class WalletServiceImpl implements WalletService{
             //Currency currency = currencyRepository.getOne(currencyId);
             Currency currency = currencyRepository.findByName(currencyName);
             String error = String.format(ErrorMessage.NO_CURRENCY_PRESENT,currencyName);
-            inputParametersValidator.conditionIsTrue(currency != null,error,ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(currency != null,error,HttpStatus.BAD_REQUEST.value());
             return walletRepository.save(new Wallet(userId, currency, new BigDecimal(0), updatedBy));
         } catch (ObjectNotFoundException e){
-            throw new WalletException(String.format(ErrorMessage.NO_CURRENCY_PRESENT,currencyName),ErrorCode.BadRequest.getCode());
+            throw new WalletException(String.format(ErrorMessage.NO_CURRENCY_PRESENT,currencyName),HttpStatus.BAD_REQUEST.value());
         }
     }
 
@@ -123,7 +123,7 @@ class WalletServiceImpl implements WalletService{
 
             //check that there is enough funds on wallet balance for debit transaction
             Boolean condition = (isCredit || (wallet.getBalance().compareTo(transactionAmount.abs()) >= 0) );
-            inputParametersValidator.conditionIsTrue(condition, String.format(ErrorMessage.NOT_ENOUGH_FUNDS,wallet.getId(),amount),ErrorCode.BadRequest.getCode());
+            inputParametersValidator.conditionIsTrue(condition, String.format(ErrorMessage.NOT_ENOUGH_FUNDS,wallet.getId(),amount),HttpStatus.BAD_REQUEST.value());
 
             //update wallet
             wallet.setBalance(wallet.getBalance().add(transactionAmount));
@@ -134,7 +134,7 @@ class WalletServiceImpl implements WalletService{
 
         }catch (NumberFormatException e){
             String error = String.format(ErrorMessage.NUMBER_FORMAT_MISMATCH,amount);
-            throw new WalletException(error, ErrorCode.BadRequest.getCode());
+            throw new WalletException(error, HttpStatus.BAD_REQUEST.value());
         }
     }
 }
