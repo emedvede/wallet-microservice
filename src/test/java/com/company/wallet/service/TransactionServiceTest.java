@@ -230,6 +230,4 @@ public class TransactionServiceTest {
             assertEquals(ex.getErrorCode(),ErrorCode.BadRequest.getCode());
         }
     }
-
-
 }

@@ -190,5 +190,4 @@ public class WalletRepositoryTest {
     public void after(){
     }
 
-
 }

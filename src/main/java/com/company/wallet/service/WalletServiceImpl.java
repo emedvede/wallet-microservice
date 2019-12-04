@@ -137,6 +137,4 @@ class WalletServiceImpl implements  WalletService{
             throw new WalletException(error, ErrorCode.BadRequest.getCode());
         }
     }
-
-
 }

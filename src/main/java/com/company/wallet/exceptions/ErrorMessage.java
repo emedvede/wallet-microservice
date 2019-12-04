@@ -70,5 +70,4 @@ public class ErrorMessage {
         return error.substring(error.lastIndexOf("(") + 1,error.lastIndexOf(")"));
     }
 
-
 }

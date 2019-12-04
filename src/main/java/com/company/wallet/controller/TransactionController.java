@@ -24,7 +24,6 @@ import java.util.Map;
  * @author Elena Medvedeva
  */
 @RestController
-//@RequestMapping("/api")
 public class TransactionController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());

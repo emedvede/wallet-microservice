@@ -23,5 +23,4 @@ public enum ErrorCode {
         this.code = code;
     }
 
-
 }

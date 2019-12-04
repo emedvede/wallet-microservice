@@ -17,5 +17,4 @@ public interface Validator<K,V> {
     public void validate(@NotNull Map<K, V> input, @NotNull List<K> required) throws WalletException;
     public void isTrue(@NotNull Boolean condition, @NotNull String errorMessage, int errorCode) throws WalletException;
 
-
 }

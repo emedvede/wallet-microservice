@@ -194,8 +194,4 @@ public class TransactionRepositoryTest {
             assertTrue( ex.getMessage().contains("could not execute statement"));
         }
     }
-
-
-
-
 }

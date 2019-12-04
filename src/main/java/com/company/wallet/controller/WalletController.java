@@ -23,10 +23,9 @@ import java.util.List;
  *  @author Elena Medvedeva
  */
 @RestController
-//@RequestMapping("/api")
 class WalletController {
 
-       Logger logger = LoggerFactory.getLogger(this.getClass());
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private WalletService walletService;
@@ -94,8 +93,5 @@ class WalletController {
         Wallet wallet = walletService.createWallet(dataHashMap.get("userId"),dataHashMap.get("currency"));
         return new GsonBuilder().registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY).create().toJson(wallet);
     }
-
-
-
 
 }

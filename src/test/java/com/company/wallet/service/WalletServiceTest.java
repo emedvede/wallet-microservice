@@ -243,7 +243,4 @@ public class WalletServiceTest {
             assertEquals(ex.getErrorCode(),ErrorCode.BadRequest.getCode());
         }
     }
-
-
-
 }
