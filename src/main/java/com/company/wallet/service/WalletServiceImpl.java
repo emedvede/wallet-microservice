@@ -80,8 +80,6 @@ class WalletServiceImpl implements WalletService{
 
     /**
      * Creates wallet based on currency.
-     * No additional SQL query is used to select currency by Id,
-     * because JPARepository.getOne is used, which returns only reference for currency object.
      * @param userId valid currency id
      * @param currencyName valid currency name
      * @return created wallet
@@ -91,7 +89,6 @@ class WalletServiceImpl implements WalletService{
     @Override
     public Wallet createWallet(@NotBlank String userId,@NotBlank String currencyName) throws WalletException{
         try {
-            //Currency currency = currencyRepository.getOne(currencyId);
             Currency currency = currencyRepository.findByName(currencyName);
             String error = String.format(ErrorMessage.NO_CURRENCY_PRESENT,currencyName);
             inputParametersValidator.conditionIsTrue(currency != null,error,HttpStatus.BAD_REQUEST.value());

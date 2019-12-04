@@ -94,7 +94,7 @@ public class TransactionServiceImpl implements TransactionService {
      * Global id should be unique.
      * Transaction should have the same currency as wallet.
      * No additional SQL query is used to select currency by Id and transaction type by Id
-     * because JPARepository.getOne is used, which returns only reference for currency object.
+     * because JPARepository.getOne is used, which returns only reference for transaction object.
      *
      * Set isolation = Isolation.SERIALIZABLE in order to avoid concurrency issues (in case of deploying application to multiple hosts)
      *
@@ -114,7 +114,6 @@ public class TransactionServiceImpl implements TransactionService {
             //Check for unique transaction globalId happens due to entity constrains on Transaction.globalId (unique=true)
 
             //Get currency reference
-            //Currency currency = currencyRepository.getOne(currencyId);
             Currency currency = currencyRepository.findByName(currencyName);
             String error = String.format(ErrorMessage.NO_CURRENCY_PRESENT, currencyName);
             inputParametersValidator.conditionIsTrue(currency != null,error,HttpStatus.BAD_REQUEST.value());
