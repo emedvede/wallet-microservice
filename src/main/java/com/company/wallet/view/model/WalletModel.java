@@ -3,14 +3,16 @@ package com.company.wallet.view.model;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import static com.company.wallet.exceptions.ErrorMessage.PART_NO_MANDATORY_FIELD;
+
 public class WalletModel {
 
-    @NotBlank(message = "Field userId is mandatory. It should be provided and can't be empty.")
-    @NotNull(message = "Field userId is mandatory. It should be provided and can't be empty.")
+    @NotBlank(message = "Field userId" + PART_NO_MANDATORY_FIELD)
+    @NotNull(message = "Field userId" + PART_NO_MANDATORY_FIELD)
     private String userId;
 
-    @NotBlank(message = "Field currency is mandatory. It should be provided and can't be empty.")
-    @NotNull(message = "Field currency is mandatory. It should be provided and can't be empty.")
+    @NotBlank(message = "Field currency" + PART_NO_MANDATORY_FIELD)
+    @NotNull(message = "Field currency" + PART_NO_MANDATORY_FIELD)
     private String currency;
 
     public WalletModel(){}

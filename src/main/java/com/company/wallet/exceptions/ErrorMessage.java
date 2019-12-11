@@ -21,7 +21,8 @@ public class ErrorMessage {
     public static final String NO_TRANSACTION_TYPE_PRESENT = "Undefined transactionType %s.";
     public static final String NUMBER_FORMAT_MISMATCH = "'%s' should be a number";
     public static final String NOT_ENOUGH_FUNDS = "Wallet %d has not enough funds to perform debit transaction with amount %s";
-    public static final String NO_MANDATORY_FIELD = "Field %s is mandatory. It should be provided and can't be empty.";
+    public static final String PART_NO_MANDATORY_FIELD = " is mandatory. It should be provided and can't be empty.";
+    public static final String NO_MANDATORY_FIELD = "Field %s" + PART_NO_MANDATORY_FIELD;
     public static final String TRANSACTION_CURRENCY_NOT_EQ_WALLET_CURRENCY = "Transaction can't be saved. Transaction currency %s differs from wallet currency %s.";
 
     //Template messages to compare

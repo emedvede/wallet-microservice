@@ -3,26 +3,28 @@ package com.company.wallet.view.model;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import static com.company.wallet.exceptions.ErrorMessage.PART_NO_MANDATORY_FIELD;
+
 public class TransactionModel {
 
-    @NotBlank(message = "Field globalId is mandatory. It should be provided and can't be empty.")
-    @NotNull(message = "Field globalId is mandatory. It should be provided and can't be empty.")
+    @NotBlank(message = "Field globalId" + PART_NO_MANDATORY_FIELD)
+    @NotNull(message = "Field globalId" + PART_NO_MANDATORY_FIELD)
     private String globalId;
 
-    @NotBlank(message = "Field currency is mandatory. It should be provided and can't be empty.")
-    @NotNull(message = "Field currency is mandatory. It should be provided and can't be empty.")
+    @NotBlank(message = "Field currency" + PART_NO_MANDATORY_FIELD)
+    @NotNull(message = "Field currency" + PART_NO_MANDATORY_FIELD)
     private String currency;
 
-    @NotBlank(message = "Field walletId is mandatory. It should be provided and can't be empty.")
-    @NotNull(message = "Field walletId is mandatory. It should be provided and can't be empty.")
+    @NotBlank(message = "Field walletId" + PART_NO_MANDATORY_FIELD)
+    @NotNull(message = "Field walletId" + PART_NO_MANDATORY_FIELD)
     private String walletId;
 
-    @NotBlank(message = "Field transactionTypeId is mandatory. It should be provided and can't be empty.")
-    @NotNull(message = "Field transactionTypeId is mandatory. It should be provided and can't be empty.")
+    @NotBlank(message = "Field transactionTypeId" + PART_NO_MANDATORY_FIELD)
+    @NotNull(message = "Field transactionTypeId" + PART_NO_MANDATORY_FIELD)
     private String transactionTypeId;
 
-    @NotBlank(message = "Field amount is mandatory. It should be provided and can't be empty.")
-    @NotNull(message = "Field amount is mandatory. It should be provided and can't be empty.")
+    @NotBlank(message = "Field amount" + PART_NO_MANDATORY_FIELD)
+    @NotNull(message = "Field amount" + PART_NO_MANDATORY_FIELD)
     private String amount;
 
     private String description;
