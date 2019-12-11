@@ -9,7 +9,7 @@ import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
 import com.company.wallet.repository.TransactionRepository;
 import com.company.wallet.repository.TransactionTypeRepository;
-import com.company.wallet.validator.InputParametersValidator;
+import com.company.wallet.helper.Helper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionTypeRepository transactionTypeRepository;
 
     @Autowired
-    private InputParametersValidator inputParametersValidator;
+    private Helper inputParametersValidator;
 
 
     @Value("${db.updated_by}")

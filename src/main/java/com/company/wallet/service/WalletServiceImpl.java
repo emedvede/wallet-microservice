@@ -7,7 +7,7 @@ import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
 import com.company.wallet.repository.TransactionRepository;
 import com.company.wallet.repository.WalletRepository;
-import com.company.wallet.validator.InputParametersValidator;
+import com.company.wallet.helper.Helper;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +44,7 @@ class WalletServiceImpl implements WalletService{
     private CurrencyRepository currencyRepository;
 
     @Autowired
-    private InputParametersValidator inputParametersValidator;
+    private Helper inputParametersValidator;
 
     @Value("${db.updated_by}")
     private String updatedBy;

@@ -5,8 +5,8 @@ import com.company.wallet.entities.Transaction;
 import com.company.wallet.entities.TransactionType;
 import com.company.wallet.entities.Wallet;
 import com.company.wallet.service.TransactionService;
-import com.company.wallet.validator.InputParametersValidator;
-import com.company.wallet.validator.InputParametersValidatorImpl;
+import com.company.wallet.helper.Helper;
+import com.company.wallet.helper.HelperImpl;
 import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import static com.company.wallet.exceptions.ErrorMessage.NO_MANDATORY_FIELD;
 import static org.hamcrest.Matchers.hasSize;
@@ -45,8 +46,8 @@ public class TransactionControllerTest {
     @TestConfiguration
     static class WalletControllerTestContextConfiguration {
         @Bean
-        public InputParametersValidator validator() {
-            return new InputParametersValidatorImpl();
+        public Helper validator() {
+            return new HelperImpl();
         }
 
     }

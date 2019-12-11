@@ -5,8 +5,9 @@ import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.gson.adapter.HibernateProxyTypeAdapter;
 import com.company.wallet.gson.exclusion.ExcludeField;
 import com.company.wallet.gson.exclusion.GsonExclusionStrategy;
+import com.company.wallet.helper.Helper;
 import com.company.wallet.service.TransactionService;
-import com.company.wallet.validator.InputParametersValidator;
+import com.company.wallet.view.model.TransactionModel;
 import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Restful controller for managing wallet transactions
@@ -32,7 +32,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @Autowired
-    private InputParametersValidator inputParametersValidator;
+    private Helper inputParametersValidator;
 
     @GetMapping(
             value = "/wallets/{id}/transactions",
@@ -57,7 +57,7 @@ public class TransactionController {
      * Example of debit transaction JSON body
      * {"globalId":"123","currency":"EUR","walletId": "1","transactionTypeId":"D","amount":"100","description":"withdraw money"}
      * </p>
-     * @param dataMap contains input parameters in the following format:
+     * @param transactionModel contains input parameters in the following format:
      *                {"globalId":"123","currency":"EUR","walletId": "1","transactionTypeId":"C","amount":"100","description":"add money"}
      * @return created transaction in JSON format
      * @throws WalletException when couldn't create transaction (e.g. globalId not unique, not enough funds on wallet balance, etc.)
@@ -69,19 +69,12 @@ public class TransactionController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public String createWalletTransaction(@RequestBody Map<String, String> dataMap) throws WalletException, ClassNotFoundException {
+    public String createWalletTransaction(@Valid @RequestBody TransactionModel transactionModel) throws WalletException, ClassNotFoundException {
         logger.debug("Called TransactionController.createWalletTransaction" );
 
-        inputParametersValidator.validate(dataMap,Arrays.asList("globalId", "currency", "walletId", "transactionTypeId", "amount"));
 
-        String globalId = dataMap.get("globalId");
-        String currency = dataMap.get("currency");
-        String walletId = dataMap.get("walletId");
-        String transactionTypeId = dataMap.get("transactionTypeId");
-        String amount = dataMap.get("amount");
-        String description = dataMap.get("description");
-
-        Transaction transaction = transactionService.createTransaction(globalId,currency,walletId, transactionTypeId,amount,description);
+        Transaction transaction = transactionService.createTransaction(transactionModel.getGlobalId(),transactionModel.getCurrency(),transactionModel.getWalletId(),
+                transactionModel.getTransactionTypeId(),transactionModel.getAmount(),transactionModel.getDescription());
         logger.info("Transaction created with id=" + transaction.getId() );
 
         return new GsonBuilder().registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY).

@@ -1,4 +1,4 @@
-package com.company.wallet.validator;
+package com.company.wallet.helper;
 
 import com.company.wallet.exceptions.WalletException;
 
@@ -7,14 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * InputParametersValidator to validate input parameters and check that condition is TRUE.
+ * Helper to check that condition is TRUE.
  * @param <K>
  * @param <V>
  *
  * @author Elena Medvedeva
  */
-public interface InputParametersValidator<K,V> {
-    public void validate(@NotNull Map<K, V> input, @NotNull List<K> required) throws WalletException;
+public interface Helper<K,V> {
     public void conditionIsTrue(@NotNull Boolean condition, @NotNull String errorMessage, int errorCode) throws WalletException;
 
 }

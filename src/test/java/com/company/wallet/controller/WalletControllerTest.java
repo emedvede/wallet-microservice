@@ -2,9 +2,9 @@ package com.company.wallet.controller;
 
 import com.company.wallet.entities.Currency;
 import com.company.wallet.entities.Wallet;
+import com.company.wallet.helper.Helper;
 import com.company.wallet.service.WalletService;
-import com.company.wallet.validator.InputParametersValidator;
-import com.company.wallet.validator.InputParametersValidatorImpl;
+import com.company.wallet.helper.HelperImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +21,11 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-
 import static com.company.wallet.exceptions.ErrorMessage.NO_MANDATORY_FIELD;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,8 +40,8 @@ public class WalletControllerTest {
     @TestConfiguration
     static class WalletControllerTestContextConfiguration {
         @Bean
-        public InputParametersValidator validator() {
-            return new InputParametersValidatorImpl();
+        public Helper validator() {
+            return new HelperImpl();
         }
 
     }

@@ -5,7 +5,8 @@ import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.gson.adapter.HibernateProxyTypeAdapter;
 import com.company.wallet.gson.exclusion.ExcludeField;
 import com.company.wallet.gson.exclusion.GsonExclusionStrategy;
-import com.company.wallet.validator.InputParametersValidator;
+import com.company.wallet.helper.Helper;
+import com.company.wallet.view.model.WalletModel;
 import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 import com.company.wallet.service.WalletService;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -31,7 +31,7 @@ class WalletController {
     private WalletService walletService;
 
     @Autowired
-    private InputParametersValidator inputParametersValidator;
+    private Helper inputParametersValidator;
 
     @GetMapping(
             value = "/test",
@@ -78,19 +78,17 @@ class WalletController {
                 .create().toJson(wallets);
     }
 
-
     /**
      * Creates new wallet.currency must be provided. In the form {"userId":"user",currency":"EUR"}
-     * @param dataHashMap Expecting currency to be set, e. g. {"userId":"user","currency":"EUR"}. Expects hashmap in JSON format.
+     * @param walletModel Expecting currency to be set, e. g. {"userId":"user","currency":"EUR"}. Expects WalletModel in JSON format.
      * @return new wallet in JSON format
      * @throws WalletException when failed to create wallet
      */
     @PostMapping(value = "/wallets",  produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String createWallet(@RequestBody HashMap<String, String> dataHashMap) throws WalletException {
+    public String createWallet(@Valid @RequestBody WalletModel walletModel) throws WalletException {
         logger.debug("Called WalletController.createWallet");
-        inputParametersValidator.validate(dataHashMap,Arrays.asList("userId","currency"));
-        Wallet wallet = walletService.createWallet(dataHashMap.get("userId"),dataHashMap.get("currency"));
+        Wallet wallet = walletService.createWallet(walletModel.getUserId(),walletModel.getCurrency());
         return new GsonBuilder().registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY).create().toJson(wallet);
     }
 

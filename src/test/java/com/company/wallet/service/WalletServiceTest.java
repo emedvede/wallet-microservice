@@ -7,8 +7,8 @@ import com.company.wallet.exceptions.WalletException;
 import com.company.wallet.repository.CurrencyRepository;
 import com.company.wallet.repository.TransactionRepository;
 import com.company.wallet.repository.WalletRepository;
-import com.company.wallet.validator.InputParametersValidator;
-import com.company.wallet.validator.InputParametersValidatorImpl;
+import com.company.wallet.helper.Helper;
+import com.company.wallet.helper.HelperImpl;
 import org.hibernate.ObjectNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,8 +47,8 @@ public class WalletServiceTest {
         }
 
         @Bean
-        public InputParametersValidator validator() {
-            return new InputParametersValidatorImpl();
+        public Helper validator() {
+            return new HelperImpl();
         }
         //for annotation validation on method signature
         @Bean
